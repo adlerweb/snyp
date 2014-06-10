@@ -28,7 +28,7 @@ Schritte f�r die Installation:
 1. Dateien in einem durch z.B. Apache gehosteten Ordner kopieren und setperms.sh in dem Ordner ausf�hren.
 2. Datenbank in MySQL anlegen und die esniper.sql importieren.
 3. Einen User in MySQL f�r die Datenbank anlegen (oder den Root-User nutzen)
-4. In der Datei config.inc die Einstellungen anpassen.
+4. In der Datei config.inc.php die Einstellungen anpassen.
    !Es muss auf die Dateien refereneziert werden: z.B./usr/bin/esniper   
 5. Die reload.php in die crontab eintragen und am besten jede Stunde laufen lassen.
    Die reload.php pr�ft, ob noch alle Snipe-Prozesse laufen, bzw. beendet fehlerhafte. Sie kann auch beim
