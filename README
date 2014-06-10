@@ -26,7 +26,7 @@ that snyp currently can only use a subset of esnipers features.
    something similar
 2. Run "install/setperms.sh" to set correct permissions for all executable files
 3. Create a MySQL database and import esniper.sql from the install subdirectory
-4. Set the appropiate MySQL credentials in config.inc. Also check the esniper and config path
+4. Set the appropiate MySQL credentials in config.inc.php. Also check the esniper and config path
 5. Add reload.php to your crontab - it will check the health of your esniper processes. The
    recommended run frequnecy is hourly so a correct line for "crontab -e" would be:
    0 * * * * /usr/bin/php -f /var/www/snyp/reload.php
@@ -61,7 +61,7 @@ dass snyp zur Zeit nicht alle Funktionen des esnipers unterstützt.
 2. Starten sie "install/setperms.sh" um die korrekten Rechte für ausführbare Dateien zu setzen.
 3. Erstellen sie eine MySQL-Datenbank und importieren sie die Inhalte der esniper.sql, welche im
    Unterverzeichnis "install" zu finden ist.
-4. Tragen sie die entsprechenden MySQL-Zugangsdaten in der Datei config.inc ein. Hier sind auch die
+4. Tragen sie die entsprechenden MySQL-Zugangsdaten in der Datei config.inc.php ein. Hier sind auch die
    Pfade zu esniper und dessen Konfiguration an die lokalen Begebenheiten anzupassen.
 5. Fügen sie die reload.php zur Crontab hinzu - diese Datei prüft regelmäßig den Zustand der esniper-
    Prozesse. Die empfohlene Ausführtfrequenz liegt bei 60 Minuten, eine passende Zeile für "crontab -e"

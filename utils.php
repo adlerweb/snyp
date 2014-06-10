@@ -26,7 +26,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-require_once 'config.inc';
+require_once 'config.inc.php';
 require_once 'ez_sql.php';
 require_once 'phpLinkCheck.php';
 
