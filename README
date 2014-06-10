@@ -1,30 +1,40 @@
-Photo http://twitpic.com/dkvjpk
+# snyp - a web based auction manager based on esniper
 
-For more information, see <http://esniper.sf.net/>.
+## English
 
-Es werden nicht alle Features von esniper genutzt, einige wurden Aufgrund der Verwaltung 
-über PHP abgebildet.
+### About
 
-!!!You can use the esniper file that is provided in the actual release or compile the newest 
-version from the CVS.
+Screenshot: http://twitpic.com/dkvjpk
 
------------------------------------------------------------------------------------------------------
+snyp is a PHP based web interface designed to control esniper [1], a ebay auction sniper. Please note
+that snyp currently can only use a subset of esnipers features.
 
-Requirements:
-Apache, PHP, MySQL, esniper, pstree, grep
+[1] http://esniper.sf.net/
 
-It is provided that the pathes to SH and PHP-interpreter are:
-/bin/sh
-/usr/bin/php
-(Suse 9 default)
+### Requirements:
 
-If this are not the standard on your system you have to change it in updateDB.php, reload.php and
-esniperstart.sh.
+* HTTP-Webserver (Apache, nginex, etc)
+* PHP interpreter
+* MySQL or MariaDB database
+* esniper
+* basic GNU utils (pstree, grep, sh)
 
-------------------------------------------------------------------------------------------------------
+### Installation
 
-Schritte f�r die Installation:
+1. Download and unpack the ZIP file or clone the git-repository using git to a folder published by 
+   your HTTP-server. This is in most cases /var/www, /srv/http, /var/www/localhost/htdocs or 
+   something similar
+2. Run "install/setperms.sh" to set correct permissions for all executable files
+3. Create a MySQL database and import esniper.sql from the install subdirectory
+4. Set the appropiate MySQL credentials in config.inc. Also check the esniper and config path
+5. Add reload.php to your crontab - it will check the health of your esniper processes. The
+   recommended run frequnecy is hourly so a correct line for "crontab -e" would be:
+   0 * * * * /usr/bin/php -f /var/www/snyp/reload.php
+6. (optional) If your server is accessible over the internet it is highly recommended to
+   limit the access using .htaccess or similar methods
+7. Access the folder using a browser via HTTP
 
+<<<<<<< HEAD
 1. Dateien in einem durch z.B. Apache gehosteten Ordner kopieren und setperms.sh in dem Ordner ausf�hren.
 2. Datenbank in MySQL anlegen und die esniper.sql importieren.
 3. Einen User in MySQL f�r die Datenbank anlegen (oder den Root-User nutzen)
@@ -34,20 +44,41 @@ Schritte f�r die Installation:
    Die reload.php pr�ft, ob noch alle Snipe-Prozesse laufen, bzw. beendet fehlerhafte. Sie kann auch beim
    Booten ausgef�hrt werden.
 6. Sch�n aus dem Web snipern.
+=======
+## German
+>>>>>>> betterreadme
 
-optional: Wenn die Seite aus dem Web erreichbar ist, sollte eine Sicherung mit .htaccess �ber Apache erfolgen.
+### Über
 
+Screenshot: http://twitpic.com/dkvjpk
 
+Snyp ist ein PHP-basiertes Webinterface zur Steuerung des eBay-Snipers esniper [1]. Bitte beachten sie,
+dass snyp zur Zeit nicht alle Funktionen des esnipers unterstützt.
 
-installation steps:
+[1] http://esniper.sf.net/
 
-1. Copy files in a Apache hosted folder and execute setperms.sh from this folder.
-2. Create a database in MySQL and import the esniper.sql structure.
-3. Create a user in MySQL for the database (or use the root-user).
-4. Adapt the confic.inc to your installation properties.
-   !There have to be absolute references on files: e.g. /usr/bin/esniper
-5. Put the reload.php in the crontab to run every hour.
-   The reload.php stops unknown esniper processes and starts missings. You could either execute it on booting.
-6. Sniper from the Web.
+### Voraussetzungen
 
-optional: If the frontend is accessable from the Web, you should secure it with .htaccess file.
+* HTTP-Webserver (Apache, nginex, etc)
+* PHP-Interpreter
+* MySQL oder MariaDB Datenbank
+* esniper
+* GNU-Hilfsprogramme (pstree, grep, sh)
+
+### Installation
+
+1. Laden und entpacken sie die ZIP-Datei oder klonen sie das GIT-Repository in einen Ordner, welcher
+   von ihrem HTTP-Server veröffentlicht wird. Dies ist meist /var/www, /srv/http,
+   /var/www/localhost/htdocs oder Änhliches.
+2. Starten sie "install/setperms.sh" um die korrekten Rechte für ausführbare Dateien zu setzen.
+3. Erstellen sie eine MySQL-Datenbank und importieren sie die Inhalte der esniper.sql, welche im
+   Unterverzeichnis "install" zu finden ist.
+4. Tragen sie die entsprechenden MySQL-Zugangsdaten in der Datei config.inc ein. Hier sind auch die
+   Pfade zu esniper und dessen Konfiguration an die lokalen Begebenheiten anzupassen.
+5. Fügen sie die reload.php zur Crontab hinzu - diese Datei prüft regelmäßig den Zustand der esniper-
+   Prozesse. Die empfohlene Ausführtfrequenz liegt bei 60 Minuten, eine passende Zeile für "crontab -e"
+   würde z.B. so aussehen:
+   0 * * * * /usr/bin/php -f /var/www/snyp/reload.php
+6. (optional) Ist der Webserver über das Internet erreichbar wird dringend empfohlen z.B. über .htaccess
+   einen Zugriffsschutz einzurichten.
+7. Rufen sie den Ordner mit einem Browser per HTTP auf.
