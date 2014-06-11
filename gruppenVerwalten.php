@@ -30,12 +30,12 @@ require 'utils.php';
 require 'htmlutil.php';
 require 'language.php';
 
-$name = $_GET["name"];
-$notizen   = $_GET["notizen"];
-$farbe = $_GET["farbe"];
-$nureins = $_GET["nureins"];
-$zutun = $_GET["zutun"];
-$gid = $_GET["gid"];
+$name = (isset($_GET["name"]) ? $_GET["name"] : '');
+$notizen   = (isset($_GET["notizen"]) ? $_GET["notizen"] : '');
+$farbe = (isset($_GET["farbe"]) ? $_GET["farbe"] : '');
+$nureins = (isset($_GET["nureins"]) ? $_GET["nureins"] : '');
+$zutun = (isset($_GET["zutun"]) ? $_GET["zutun"] : '');
+$gid = (isset($_GET["gid"]) ? $_GET["gid"] : '');
 
 
 
