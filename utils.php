@@ -35,21 +35,21 @@ $db = new db(EZSQL_DB_USER, EZSQL_DB_PASSWORD, EZSQL_DB_NAME, EZSQL_DB_HOST);
 if(!$db->alive()) die();
 
 function genAuctionfile($artnr,$bid) {
-    $fn=TMP_FOLDER."/".$artnr.".ebaysnipe";
-    $text="$artnr $bid\n";
-    $fp=fopen($fn,"w");
-    fwrite($fp,$text);
-    fclose($fp);
-    chmod($fn, 0666);
+	$fn=TMP_FOLDER."/".$artnr.".ebaysnipe";
+	$text="$artnr $bid\n";
+	$fp=fopen($fn,"w");
+	fwrite($fp,$text);
+	fclose($fp);
+	chmod($fn, 0666);
 }
 
 function startEsniper($artnr) {
-    $fn=TMP_FOLDER."/".$artnr.".ebaysnipe";
-    $fnl=TMP_FOLDER."/".$artnr.".ebaysnipelog";
-    touch($fnl);
-    chmod($fnl, 0666);
-    $pid = exec("./esniperstart.sh $fn $fnl ".PATH_TO_ESNIPER." ".PATH_TO_ESNIPERCONFIG." > /dev/null & echo \$!", $results,$status);
-    return($pid);
+	$fn=TMP_FOLDER."/".$artnr.".ebaysnipe";
+	$fnl=TMP_FOLDER."/".$artnr.".ebaysnipelog";
+	touch($fnl);
+	chmod($fnl, 0666);
+	$pid = exec("./esniperstart.sh $fn $fnl ".PATH_TO_ESNIPER." ".PATH_TO_ESNIPERCONFIG." > /dev/null & echo \$!", $results,$status);
+	return($pid);
 }
 
 function calcEndTime($deltas){
@@ -146,8 +146,8 @@ function getWatchlist($db) {
 }
 
 function auktionBeendet($artnr) {
-    $fn=TMP_FOLDER."/".$artnr.".ebaysnipelog";
-    if (file_exists($fn) && filesize ($fn) > 0) {
+	$fn=TMP_FOLDER."/".$artnr.".ebaysnipelog";
+	if (file_exists($fn) && filesize ($fn) > 0) {
 		$fp=fopen($fn,"r");
 		$text=fread($fp, filesize ($fn));
 		fclose($fp);
@@ -155,7 +155,7 @@ function auktionBeendet($artnr) {
 		elseif (ueberbotenStatus($text)) {return(2);}
 		if (preg_match("/won[ ][0[ ]item.s./", $text)) {return(2);}
 		else {return(0);}
-    }
+	}
 }
 
 function auktionEndtime($text) {
@@ -175,19 +175,19 @@ function auktionEndtime($text) {
 
 function ueberbotenStatus($text) {
 	//True meldet, dass überboten wurde.
-    $bidFound = preg_match_all("/bid: [0-9]+\.?[0-9]*/",$text,$meineGebote,PREG_PATTERN_ORDER);
+	$bidFound = preg_match_all("/bid: [0-9]+\.?[0-9]*/",$text,$meineGebote,PREG_PATTERN_ORDER);
 
-    $bidMinimum = preg_match("/Bid[ ]price[ ]less[ ]than[ ]minimum[ ]bid[ ]price/",$text);
-    if (($bidFound != 0 && substr($meineGebote[0][count($meineGebote[0])-1],5) - getHighestBid($text) <= 0) || $bidMinimum != false) {
+	$bidMinimum = preg_match("/Bid[ ]price[ ]less[ ]than[ ]minimum[ ]bid[ ]price/",$text);
+	if (($bidFound != 0 && substr($meineGebote[0][count($meineGebote[0])-1],5) - getHighestBid($text) <= 0) || $bidMinimum != false) {
 		return(true);
-    } else {
+	} else {
 		return(false);
-    }
+	}
 }
 
 function statusPruefen($artnr,$db) {
-    $status = auktionBeendet($artnr);
-    if ($status != 0) {
+	$status = auktionBeendet($artnr);
+	if ($status != 0) {
 				$sql = "UPDATE snipe SET status = ".$status." WHERE artnr=".$artnr;
 				$db->query($sql);
 				if ($status == 1) {
@@ -199,20 +199,20 @@ function statusPruefen($artnr,$db) {
 								$db->query($sql);
 						}
 				}
-    }
+	}
 }
 
 function snipeEinstellen($artnr,$bid,$db) {
-    $bid = str_replace(",",".",$bid);
-    $sql = "SELECT * FROM snipe WHERE artnr=".$artnr;
-    $snipe = $db->get_row($sql);
-    if (empty($snipe)) {
+	$bid = str_replace(",",".",$bid);
+	$sql = "SELECT * FROM snipe WHERE artnr=".$artnr;
+	$snipe = $db->get_row($sql);
+	if (empty($snipe)) {
 		genAuctionfile($artnr,$bid);
-        //PID auslesen und in Datenbank schreiben
-        $pid = startEsniper($artnr);
-        $sql = "INSERT INTO snipe (artnr,bid,pid,status) VALUES (\"$artnr\",\"$bid\",\"$pid\",0)";
-        $db->query($sql);
-    } else {
+		//PID auslesen und in Datenbank schreiben
+		$pid = startEsniper($artnr);
+		$sql = "INSERT INTO snipe (artnr,bid,pid,status) VALUES (\"$artnr\",\"$bid\",\"$pid\",0)";
+		$db->query($sql);
+	} else {
 		//Snipe bereits in Datenbank vorhanden
 		if ($bid != $snipe->bid) {
 				killSniper($artnr,$db);
@@ -226,34 +226,36 @@ function snipeEinstellen($artnr,$bid,$db) {
 				$sql = "UPDATE snipe SET pid = ".$pid." WHERE artnr = ".$artnr;
 				$db->query($sql);
 		}
-    }
-    exec("./updateDB.php &");  //Nach 10 Sekunden aus den Logs die Endtime in der DB updaten - multi Thread
+	}
+	exec("./updateDB.php &");  //Nach 10 Sekunden aus den Logs die Endtime in der DB updaten - multi Thread
 }
 
 function killSniper($artnr,$db) {
-    $sql = "SELECT * FROM snipe WHERE artnr=".$artnr;
-    $snipe = $db->get_row($sql);
+	$sql = "SELECT * FROM snipe WHERE artnr=".$artnr;
+	$snipe = $db->get_row($sql);
 
-    if (snipeRunCheck($snipe->pid) == true) {
-        //Sicherheitsabfrag eeinbauen, ob PID auch ein esniper Programm
-				//	printf("Sniperprozess mit PID ".$snipe->pid."beendet.");
-				exec("kill -15 ".getEsniperPid($snipe->pid));
-    }
-    exec("rm \"".TMP_FOLDER."/".$artnr.".*\"");
+	if (snipeRunCheck($snipe->pid) == true) {
+		//Sicherheitsabfrag eeinbauen, ob PID auch ein esniper Programm
+		//	printf("Sniperprozess mit PID ".$snipe->pid."beendet.");
+		exec("kill -15 ".getEsniperPid($snipe->pid));
+		sleep(3);
+		if (snipeRunCheck($snipe->pid) == true) exec("kill -9 ".getEsniperPid($snipe->pid));
+	}
+	exec("rm \"".TMP_FOLDER."/".$artnr.".*\"");
 }
 
 function getPids() {
-    #pidof was removed on several distros
-    #$output = shell_exec("pidof -x esniperstart.sh");
-    #if ($output != "\n") {
-    #	$pids = explode(" ",rtrim($output));
-    #}
+	#pidof was removed on several distros
+	#$output = shell_exec("pidof -x esniperstart.sh");
+	#if ($output != "\n") {
+	#	$pids = explode(" ",rtrim($output));
+	#}
 
-    $output = trim(shell_exec('ps -ef | grep esniperstart.sh'));
-    if($output == '') return array();
+	$output = trim(shell_exec('ps -ef | grep esniperstart.sh'));
+	if($output == '') return array();
 
-    preg_match_all('#[^ ]+\s+(\d+)\s+\d+\s+\d+\s+[^ ]+\s+[^ ]+\s+\d{2}:\d{2}:\d{2}\s/bin/sh ./esniperstart.sh#', $output, $match);
-    return $match[1];
+	preg_match_all('#[^ ]+\s+(\d+)\s+\d+\s+\d+\s+[^ ]+\s+[^ ]+\s+\d{2}:\d{2}:\d{2}\s/bin/sh ./esniperstart.sh#', $output, $match);
+	return $match[1];
 }
 
 
@@ -267,24 +269,24 @@ function getEsniperPid($shpid) {
 
 
 function snipeRunCheck($pid) {
-    $pids = getPids();
-    if (!empty($pids)) {
-    	return(in_array($pid,$pids));
-    } else {
-    	return(false);
-    }
+	$pids = getPids();
+	if (!empty($pids)) {
+		return(in_array($pid,$pids));
+	} else {
+		return(false);
+	}
 }
 
 
 function fileList($dir) {
-    $fp = opendir($dir);
-    while($datei = readdir($fp)) {
-        if (substr($datei,-12) == "ebaysnipelog" || substr($datei,-9) == "ebaysnipe") {
-            $dateien[] = "$datei";
-        }
-    }
-    closedir($fp);
-    return($dateien);
+	$fp = opendir($dir);
+	while($datei = readdir($fp)) {
+		if (substr($datei,-12) == "ebaysnipelog" || substr($datei,-9) == "ebaysnipe") {
+			$dateien[] = "$datei";
+		}
+	}
+	closedir($fp);
+	return($dateien);
 }
 
 
@@ -309,8 +311,8 @@ function getHighestBid($logData) {
 	if ($status == 0) {
 		return(0);
 	} else {
-    	return(substr($aktGebote[0][count($aktGebote[0])-1],11));
-    }
+		return(substr($aktGebote[0][count($aktGebote[0])-1],11));
+	}
 }
 
 
@@ -343,11 +345,11 @@ function updateEndtime($db) {
 
 function snipeGenerate($db) {
 //Generiert anhand der Datenbankdaten esniper Prozesse
-    $msg = "";
-    $sql = "SELECT * FROM snipe WHERE status = 0";
-    $snipelist = $db->get_results($sql);
-    if (!empty($snipelist)) {
-    	foreach($snipelist as $snipe) {
+	$msg = "";
+	$sql = "SELECT * FROM snipe WHERE status = 0";
+	$snipelist = $db->get_results($sql);
+	if (!empty($snipelist)) {
+		foreach($snipelist as $snipe) {
 			if (!snipeRunCheck($snipe->pid)) {
 			//Prozess läuft nicht
 				snipeEinstellen($snipe->artnr,$snipe->bid,$db);
@@ -355,47 +357,49 @@ function snipeGenerate($db) {
 			} else {
 				$msg = $msg ."Snipe für ".$snipe->artnr." läuft bereits.\n";
 			}
-    	}
-    }
-    return($msg);
+		}
+	}
+	return($msg);
 }
 
 function collectGarbage($db) {
 	//$msg = "";
-    //Pids abschiessen, welche nicht laufen dürfen
-    $sql = "SELECT pid FROM snipe WHERE status = 0";
-    $snipePids = $db->get_col($sql);
-    $pids = getPids();
-    if (!empty($pids)) {
+	//Pids abschiessen, welche nicht laufen dürfen
+	$sql = "SELECT pid FROM snipe WHERE status = 0";
+	$snipePids = $db->get_col($sql);
+	$pids = getPids();
+	if (!empty($pids)) {
 		foreach($pids as $pid) {
 			if (!in_Array($pid,$snipePids)) {
 				$msg = $msg ."Prozess ".$pid." wurde beendet";
 				exec("kill -15 ".getEsniperPid($pid));
+				sleep(3);
+				if (snipeRunCheck($pid) == true) exec("kill -9 ".getEsniperPid($pid));
 			}
 		}
-    }
+	}
 
 	//Logs löschen, von Snipes, welche nicht in der Datenbank sind
-    $dateien = fileList(TMP_FOLDER);
-    if (!empty($dateien)) {
-	    foreach($dateien as $datei) {
-		    	$artnrDatei = explode(".",$datei);
+	$dateien = fileList(TMP_FOLDER);
+	if (!empty($dateien)) {
+		foreach($dateien as $datei) {
+				$artnrDatei = explode(".",$datei);
 			$sql = "SELECT artnr FROM snipe WHERE artnr = \"".$artnrDatei[0]."\"";
 			$snipeArtnr = $db->get_var($sql);
 			if (empty($snipeArtnr)) {
-			    exec("rm \"".TMP_FOLDER."/".$artnrDatei."\"");
+				exec("rm \"".TMP_FOLDER."/".$datei."\"");
 			}
-	    }
-    }
+		}
+	}
 
 	$sql = "SELECT artnr FROM snipe";
 	$snipeArtnr = $db->get_col($sql);
-    if (!empty($snipeArtnr)) {
-    	foreach($snipeArtnr as $artnr) {
+	if (!empty($snipeArtnr)) {
+		foreach($snipeArtnr as $artnr) {
 			statusPruefen($artnr,$db);
-    	}
-    }
+		}
+	}
 
-    return($msg);
+	return($msg);
 }
 ?>
